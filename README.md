@@ -1,5 +1,6 @@
 
 # AUK AI Holographic Assistant
+[![MIT License](https://img.shields.io/badge/License-Apache2.0-red.svg)](https://choosealicense.com/licenses/apache-2.0/)
 
 An innovative Holographic Assistant delivering intuitive interactions through NLP and immersive 3D visuals. Enhances Human-Computer interaction (HCI) via intuitive voice-based interactions. Provides real-time, intelligent access to academic and administrive services at AUK.
 
