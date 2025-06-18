@@ -219,7 +219,7 @@ def process_text(text):
 
     # Main model response
     prompt = f"{prompt_template}\n{chat_history}Assistant:"
-    response = llm(prompt, stop=["User:", "</s>", "[INST]", "[/INST]"], max_tokens=200)
+    response = llm(prompt, stop=["User:", "</s>", "[INST]", "[/INST]","Assistant:"], max_tokens=200)
     assistant_reply = response["choices"][0]["text"].strip()
 
     print(f"\nAssistant says: {assistant_reply}")
@@ -322,7 +322,6 @@ def manual_recorder():
             process_text(text)
 
 
-# Refine Manual Mode with Fallbacks
 def gpt_recorder():
     mode = input("Type 'm' for manual text input, or press [Enter] to use microphone: ").lower()
 
@@ -333,25 +332,22 @@ def gpt_recorder():
                 break
             process_text(user_input)
     else:
+        recorder = AudioToTextRecorder(
+            wake_words="",
+            use_microphone=True,
+            debug_mode=True,
+            spinner=False,
+            device="cpu",
+            on_recording_stop=my_stop_callback,
+            post_speech_silence_duration=0.4,
+            min_length_of_recording=2.0
+        )
         while True:
-            # ✅ Re-initialize the recorder each time
-            recorder = AudioToTextRecorder(
-                wake_words="",
-                use_microphone=True,
-                debug_mode=True,
-                spinner=False,
-                device="cpu",
-                on_recording_stop=my_stop_callback,
-                post_speech_silence_duration=0.4,
-                min_length_of_recording=2.0
-            )
-            
-
             input("\n🎤 Press [Enter] to start recording...")
             print("Recording... Speak now!")
             recorder.start()
             recorder.start_recording_event.set()
-            time.sleep(0.5) # Mic warming
+            time.sleep(0.5)
 
             input("⏹️  Press [Enter] again to stop recording...")
             recorder.stop_recording_event.set()
